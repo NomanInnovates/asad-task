@@ -10,6 +10,7 @@ export default function Login() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    
     try {
       setLoading(true);
       const response = await fetch(`http://localhost:8000/signin`, {
@@ -18,14 +19,14 @@ export default function Login() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username,
-          password: password,
+          username,
+          password,
         }),
       });
 
       if (response.ok) {
-        const parsedData = await response.json();
-        const token = parsedData?.token;
+        const data = await response.json();
+        const token = data?.token;
         if (token) {
           document.cookie = `token=${token}`;
           window.location.href = "/search-country";
@@ -35,9 +36,9 @@ export default function Login() {
       } else {
         alert("Login failed");
       }
-      setLoading(false);
-    } catch (e) {
-      console.log("catch", e);
+    } catch (error) {
+      console.error("Login error:", error);
+    } finally {
       setLoading(false);
     }
   };
@@ -66,7 +67,7 @@ export default function Login() {
             required
           />
         </label>
-        <button disabled={isLoading} type="submit" className="login-button">
+        <button type="submit" disabled={isLoading} className="login-button">
           {isLoading ? "Loading.." : "Login"}
         </button>
       </form>

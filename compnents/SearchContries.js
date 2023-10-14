@@ -2,24 +2,24 @@
 import React, { useState } from "react";
 import "./Search.css";
 
-export default  function SearchContries() {
+export default function SearchCountries() {
   const [query, setQuery] = useState("pak");
   const [country, setCountry] = useState(null);
   const [isLoading, setLoading] = useState(false);
 
-  const handleQuery = (e) => {
-    setQuery(e.target.value);
+  const handleQuery = (event) => {
+    setQuery(event.target.value);
   };
 
-  const handleSearch = async (e) => {
+  const handleSearch = async () => {
     try {
       setLoading(true);
+
       const cookies = document.cookie.split("; ").reduce((acc, cookie) => {
         const [name, value] = cookie.split("=");
         acc[name] = value;
         return acc;
       }, {});
-
       const token = cookies.token;
 
       if (!token) {
@@ -35,30 +35,29 @@ export default  function SearchContries() {
           headers: {
             "Content-Type": "application/json",
             Authorization: `${token}`,
-            Cookie: "access_token_cookie=" + token,
-            "X-CSRF-TOKEN": token,
           },
         }
       );
+
       if (response.ok) {
         const parsedData = await response.json();
         setCountry(parsedData);
       } else {
-       alert("Request failed");
+        alert("Request failed");
       }
+
       setLoading(false);
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      console.log(error);
       setLoading(false);
     }
   };
-  const renderedData = (country) => (
+
+  const renderCountryInfo = (country) => (
     <div className="country-info-container">
       <h1>{country.fullName}</h1>
       <p>Population: {country.population}</p>
       <p>Euro conversion rate: {country.conversionRate}</p>
-   
-
       <h2>Currencies:</h2>
       <ol>
         {country.currencies.map((currency, index) => (
@@ -74,7 +73,7 @@ export default  function SearchContries() {
 
   return (
     <div className="search-container">
-      <h1>Search Countries</h1>
+      <h1>Search Countries Information</h1>
       <div className="flex">
         <input
           type="text"
@@ -90,9 +89,7 @@ export default  function SearchContries() {
           {isLoading ? "Searching.." : "Search"}
         </button>
       </div>
-      {isLoading ? "Searching Country.." : country && renderedData(country)}
+      {isLoading ? "Searching Country.." : country && renderCountryInfo(country)}
     </div>
   );
 }
-
-
