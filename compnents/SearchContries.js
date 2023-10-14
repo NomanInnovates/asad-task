@@ -77,6 +77,7 @@ export default function SearchCountries() {
       <div className="flex">
         <input
           type="text"
+          placeholder="Enter Country Name"
           value={query}
           onChange={handleQuery}
           className="search-input"

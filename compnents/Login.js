@@ -13,7 +13,7 @@ export default function Login() {
     
     try {
       setLoading(true);
-      const response = await fetch(`http://localhost:8000/signin`, {
+      const response = await fetch(`http://localhost:8000/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -51,6 +51,7 @@ export default function Login() {
           Email:
           <input
             className="login-input"
+
             type="text"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
