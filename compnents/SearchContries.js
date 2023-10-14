@@ -53,23 +53,42 @@ export default function SearchCountries() {
     }
   };
 
-  const renderCountryInfo = (country) => (
-    <div className="country-info-container">
-      <h1>{country.fullName}</h1>
-      <p>Population: {country.population}</p>
-      <p>Euro conversion rate: {country.conversionRate}</p>
-      <h2>Currencies:</h2>
-      <ol>
-        {country.currencies.map((currency, index) => (
-          <li key={index}>
-            <p>Currency Code: {currency.currencyCode}</p>
-            <p>Name: {currency.name}</p>
-            <p>Symbol: {currency.symbol}</p>
-          </li>
-        ))}
-      </ol>
-    </div>
-  );
+  const CountryInfo = ({ country }) => {
+    const [amount, setamount] = useState();
+    return (
+      <div className="country-info-container">
+        <h1>{country.fullName}</h1>
+        <p>Population: {country.population}</p>
+        <p>Euro conversion rate: {country.conversionRate}</p>
+        <p>
+          Convert Euro into {country.currencies[0].name}: &nbsp;
+          <input
+            type="number"
+            placeholder="Enter amount in euro"
+            onChange={(e) => setamount(e.target.value)}
+          />
+          <div className="amount-convert">
+            {" "}
+            {amount && country?.conversionRate
+              ? `${amount} euros is equal to ${
+                  amount * country.conversionRate
+                } ${country.currencies[0].name}`
+              : ""}
+          </div>
+        </p>
+        <h2>Currencies:</h2>
+        <ol>
+          {country.currencies.map((currency, index) => (
+            <li key={index}>
+              <p>Currency Code: {currency.currencyCode}</p>
+              <p>Name: {currency.name}</p>
+              <p>Symbol: {currency.symbol}</p>
+            </li>
+          ))}
+        </ol>
+      </div>
+    );
+  };
 
   return (
     <div className="search-container">
@@ -90,7 +109,9 @@ export default function SearchCountries() {
           {isLoading ? "Searching.." : "Search"}
         </button>
       </div>
-      {isLoading ? "Searching Country.." : country && renderCountryInfo(country)}
+      {isLoading
+        ? "Searching Country.."
+        : country && <CountryInfo country={country} />}
     </div>
   );
 }

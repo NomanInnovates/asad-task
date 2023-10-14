@@ -20,7 +20,7 @@
   border: none;
   color: #fff;
   padding: 10px;
-  margin: 10px;
+  margin: 5px 10px;
   cursor: pointer;
   border-radius: 3px;
   background-color: #007bff;
@@ -42,4 +42,7 @@
 
 .flex{
   display: flex;
+}
+.amount-convert{
+  min-height: 20px;
 }
